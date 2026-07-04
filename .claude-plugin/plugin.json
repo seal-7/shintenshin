@@ -1,0 +1,18 @@
+{
+  "name": "shintenshin",
+  "description": "Transfer a Claude Code conversation to another machine or person via an E2E-encrypted shareable link.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Raj Talekar"
+  },
+  "homepage": "https://github.com/seal-7/shintenshin",
+  "repository": "https://github.com/seal-7/shintenshin",
+  "license": "MIT",
+  "keywords": [
+    "transfer",
+    "session",
+    "share",
+    "encryption",
+    "handoff"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "shintenshin",
+  "owner": {
+    "name": "Raj Talekar",
+    "url": "https://github.com/seal-7"
+  },
+  "plugins": [
+    {
+      "name": "shintenshin",
+      "description": "Transfer a Claude Code conversation to another machine or person via an E2E-encrypted shareable link. Adds /shintenshin:send and /shintenshin:receive.",
+      "author": {
+        "name": "Raj Talekar"
+      },
+      "category": "productivity",
+      "source": "./",
+      "homepage": "https://github.com/seal-7/shintenshin"
+    }
+  ]
+}
