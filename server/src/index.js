@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { renderLanding } from './landing.js';
+import { createStats } from './stats.js';
 
 const PORT = Number(process.env.PORT) || 3000;
 const DATA_DIR = process.env.DATA_DIR || './data';
@@ -14,8 +15,21 @@ const RATE_LIMIT_MAX = 30; // uploads per IP per hour
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const ID_RE = /^[A-Za-z0-9_-]{22}$/;
 const MAGIC = Buffer.from('ST01', 'ascii');
+const STATS_TOKEN = process.env.STATS_TOKEN;
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
+
+const stats = createStats(DATA_DIR);
+
+function checkStatsAuth(req) {
+  if (!STATS_TOKEN) return false;
+  const auth = req.headers['authorization'] || '';
+  const expected = `Bearer ${STATS_TOKEN}`;
+  const a = Buffer.from(auth);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
 
 const app = express();
 app.disable('x-powered-by');
@@ -109,11 +123,13 @@ app.get('/healthz', (req, res) => {
 });
 
 app.get('/', (req, res) => {
+  stats.recordLandingView();
   res.type('html').send(renderLanding({ mode: 'generic' }));
 });
 
 app.get('/t/:id', (req, res) => {
   const { id } = req.params;
+  stats.recordLandingView();
   if (ID_RE.test(id) && blobExists(id)) {
     res.type('html').send(renderLanding({ mode: 'transfer' }));
   } else {
@@ -164,6 +180,7 @@ app.post('/api/v1/transfers', (req, res) => {
       return;
     }
 
+    stats.recordUpload(body.length);
     const expiresAt = new Date(Date.now() + TTL_MS).toISOString();
     res.status(201).json({ id, expiresAt });
   });
@@ -182,10 +199,44 @@ app.get('/api/v1/transfers/:id', async (req, res) => {
   try {
     const data = await fsp.readFile(idPath(id));
     res.locals.bytes = data.length;
+    stats.recordDownload();
     res.type('application/octet-stream').status(200).send(data);
   } catch {
     res.status(404).json({ error: 'not found' });
   }
+});
+
+app.get('/api/v1/stats', async (req, res) => {
+  if (!checkStatsAuth(req)) {
+    res.status(404).json({ error: 'not found' });
+    return;
+  }
+
+  let activeBlobs = 0;
+  let diskBytes = 0;
+  try {
+    const files = await fsp.readdir(DATA_DIR);
+    for (const file of files) {
+      if (!file.endsWith('.bin')) continue;
+      try {
+        const stat = await fsp.stat(path.join(DATA_DIR, file));
+        activeBlobs += 1;
+        diskBytes += stat.size;
+      } catch {
+        // ignore races with concurrent deletes
+      }
+    }
+  } catch {
+    // DATA_DIR unreadable: report zeros rather than failing
+  }
+
+  res.json({
+    ...stats.snapshot(),
+    activeBlobs,
+    diskBytes,
+    uptimeSeconds: Math.floor(process.uptime()),
+    serverTime: new Date().toISOString(),
+  });
 });
 
 app.use((req, res) => {
@@ -194,4 +245,9 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
   console.log(`shintenshin-server listening on :${PORT} (DATA_DIR=${DATA_DIR})`);
+});
+
+process.on('SIGTERM', () => {
+  stats.flush();
+  process.exit(0);
 });

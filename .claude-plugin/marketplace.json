@@ -16,5 +16,6 @@
       "source": "./",
       "homepage": "https://github.com/seal-7/shintenshin"
     }
-  ]
+  ],
+  "description": "Shintenshin marketplace \u2014 mind-body transfer jutsu for Claude Code conversations"
 }
