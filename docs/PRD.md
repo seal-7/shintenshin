@@ -105,11 +105,11 @@ Locating transcript for session a3f9c1e2-... in /Users/raj/workspace/docs-site
 Transcript found (412 KB, 1,204 lines)
 Compressing... done (98 KB gzipped)
 Encrypting (AES-256-GCM, local key, never leaves this script)... done
-Uploading to https://shintenshin.up.railway.app ... done
+Uploading to https://share.shintenshin.com ... done
 
 Your conversation is ready to hand off:
 
-  https://shintenshin.up.railway.app/t/QwErTy1234567890AbCdEf#kX9f...Zq2
+  https://share.shintenshin.com/t/QwErTy1234567890AbCdEf#kX9f...Zq2
 
 Expires: 2026-07-11 (7 days from now)
 
@@ -141,7 +141,7 @@ Run from the project directory where the recipient wants the conversation to liv
 **Sample terminal output:**
 
 ```
-> /shintenshin:receive https://shintenshin.up.railway.app/t/QwErTy1234567890AbCdEf#kX9f...Zq2
+> /shintenshin:receive https://share.shintenshin.com/t/QwErTy1234567890AbCdEf#kX9f...Zq2
 
 Fetching blob QwErTy12... 98 KB
 Decrypting... done

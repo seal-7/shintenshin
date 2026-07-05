@@ -142,7 +142,7 @@ function statsSection(stats) {
   `;
 }
 
-function instructionsList({ urlPlaceholderId }) {
+function receiveInstructions({ urlPlaceholderId }) {
   return `
     <ol>
       <li>
@@ -164,7 +164,32 @@ claude plugin install shintenshin@shintenshin</pre>
   `;
 }
 
-function page({ title, headerBadge, notice, statsSection: statsHtml, script }) {
+function homeInstructions() {
+  return `
+    <ol>
+      <li>
+        Install the plugin:
+        <pre>claude plugin marketplace add seal-7/shintenshin
+claude plugin install shintenshin@shintenshin</pre>
+      </li>
+      <li>
+        <span class="accent">Send</span> your current conversation, from within Claude Code:
+        <pre>/shintenshin:send</pre>
+        <div class="note">Prints a share link valid for 7 days. Anyone with the link can import the conversation &mdash; treat it like a password.</div>
+      </li>
+      <li>
+        <span class="accent">Receive</span> a conversation someone shared with you, from the project folder where you want it to land:
+        <pre>/shintenshin:receive &lt;PASTE FULL URL&gt;</pre>
+      </li>
+      <li>
+        Every transfer is end-to-end encrypted (AES-256-GCM) &mdash; the decryption key lives only in the URL fragment and never reaches the server.
+        <div class="note">Blobs are deleted automatically after 7 days.</div>
+      </li>
+    </ol>
+  `;
+}
+
+function page({ title, headerBadge, notice, statsSection: statsHtml, instructionsHtml, script }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -184,7 +209,7 @@ function page({ title, headerBadge, notice, statsSection: statsHtml, script }) {
     ${notice || ''}
     ${statsHtml || ''}
     <div class="card">
-      ${instructionsList({ urlPlaceholderId: 'full-url' })}
+      ${instructionsHtml}
     </div>
     <footer>
       <a href="${REPO_URL}" target="_blank" rel="noopener noreferrer">${REPO_URL.replace('https://', '')}</a>
@@ -202,6 +227,7 @@ export function renderLanding({ mode, stats }) {
       title: 'Shintenshin — mind transfer awaits you',
       headerBadge: 'transfer ready',
       notice: '',
+      instructionsHtml: receiveInstructions({ urlPlaceholderId: 'full-url' }),
       script: `<script>
         (function () {
           if (location.hash) {
@@ -218,6 +244,7 @@ export function renderLanding({ mode, stats }) {
       title: 'Shintenshin — transfer expired or not found',
       headerBadge: 'shintenshin',
       notice: `<div class="notice">This transfer has expired or was never here. Links are only valid for 7 days after creation.</div>`,
+      instructionsHtml: receiveInstructions({ urlPlaceholderId: 'full-url' }),
       script: '',
     });
   }
@@ -227,6 +254,7 @@ export function renderLanding({ mode, stats }) {
     headerBadge: 'shintenshin',
     notice: '',
     statsSection: stats ? statsSection(stats) : '',
+    instructionsHtml: homeInstructions(),
     script: '',
   });
 }

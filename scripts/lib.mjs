@@ -4,8 +4,8 @@
 import { randomBytes, createCipheriv, createDecipheriv } from "node:crypto";
 import { gzipSync, gunzipSync } from "node:zlib";
 
-// Replaced after Railway deploy. Overridable via SHINTENSHIN_SERVER env var.
-export const DEFAULT_SERVER = "https://shintenshin-production.up.railway.app";
+// Overridable via SHINTENSHIN_SERVER env var.
+export const DEFAULT_SERVER = "https://share.shintenshin.com";
 
 const MAGIC = Buffer.from("ST01", "ascii");
 const IV_LEN = 12;

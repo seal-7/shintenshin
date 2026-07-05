@@ -69,7 +69,7 @@ import the conversation.
 want it to live:
 
 ```
-/shintenshin:receive https://shintenshin.up.railway.app/t/<id>#<key>
+/shintenshin:receive https://share.shintenshin.com/t/<id>#<key>
 ```
 
 Then, in your terminal, from that same directory:
