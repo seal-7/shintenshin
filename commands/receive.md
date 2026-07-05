@@ -2,7 +2,10 @@
 description: Import a conversation from a Shintenshin share link
 ---
 
-Use the shintenshin:receive skill to fetch and decrypt the transfer at
-the URL below, then relay its output to the user.
+Run this now — do not call the Skill tool, do not explain first, your very next tool call must be Bash. Quote the URL so the shell doesn't treat `#` as a comment:
 
-URL: $ARGUMENTS
+```
+node ${CLAUDE_PLUGIN_ROOT}/scripts/receive.mjs "$ARGUMENTS"
+```
+
+Then relay the script's output to the user close to verbatim (success message, new session id, file path). Tell the user to run `claude --resume <new-id>` themselves in a new terminal — a running session cannot resume into itself. If the script exits non-zero, show the exact error message.

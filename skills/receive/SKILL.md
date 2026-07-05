@@ -14,8 +14,10 @@ id. It never overwrites an existing transcript.
 
 ## Steps
 
-1. Run, passing the full URL the user gave you (including the `#...`
-   part — quote it so the shell doesn't treat `#` as a comment):
+1. Your very next tool call MUST be Bash — do not call the Skill tool
+   again, do not explain first. Pass the full URL the user gave you
+   (including the `#...` part — quote it so the shell doesn't treat `#`
+   as a comment):
    ```
    node ${CLAUDE_PLUGIN_ROOT}/scripts/receive.mjs "<url>"
    ```

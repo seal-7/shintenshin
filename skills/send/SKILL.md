@@ -14,7 +14,8 @@ see. The link works for anyone who has it, and expires after 7 days.
 
 ## Steps
 
-1. Run:
+1. Your very next tool call MUST be Bash running this — do not call the
+   Skill tool again, do not explain first:
    ```
    node ${CLAUDE_PLUGIN_ROOT}/scripts/send.mjs
    ```
