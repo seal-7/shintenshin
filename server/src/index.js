@@ -3,8 +3,11 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { renderLanding } from './landing.js';
 import { createStats } from './stats.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PORT = Number(process.env.PORT) || 3000;
 const DATA_DIR = process.env.DATA_DIR || './data';
@@ -33,6 +36,7 @@ function checkStatsAuth(req) {
 
 const app = express();
 app.disable('x-powered-by');
+app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
 
 // --- request logging: method, path, status, bytes. Never log full ids/body. ---
 function redactPath(p) {

@@ -1,125 +1,105 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 const REPO_URL = 'https://github.com/seal-7/shintenshin';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const HERO_SVG = fs
-  .readFileSync(path.join(__dirname, '..', 'assets', 'hero.svg'), 'utf8')
-  .replace(/^<svg /, '<svg style="width:100%;height:auto;display:block;" ');
+const HERO_ALT =
+  'Shintenshin no Jutsu — hands form a mind-transfer seal, ink-sketch style';
 
 const BASE_CSS = `
   :root {
-    color-scheme: dark;
-    --bg: #0a0a12;
-    --bg-alt: #121225;
-    --fg: #e8e6f5;
-    --fg-dim: #9a97b8;
-    --accent: #8b5cf6;
-    --accent-dim: #6d28d9;
-    --border: #26243d;
-    --code-bg: #14131f;
-    --danger: #f87171;
+    color-scheme: light;
+    --bg: #f7f7f5;
+    --fg: #1a1a1a;
+    --fg-dim: #5c5c5c;
+    --border: #e0e0dc;
+    --code-bg: #efefec;
+    --danger: #b91c1c;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    background: radial-gradient(circle at 50% -10%, var(--bg-alt), var(--bg) 60%);
+    background: var(--bg);
     color: var(--fg);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
+    line-height: 1.65;
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding: 48px 20px 64px;
+    padding: 40px 20px 56px;
+    -webkit-font-smoothing: antialiased;
   }
-  .container { width: 100%; max-width: 640px; }
+  .container { width: 100%; max-width: 520px; }
   .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    letter-spacing: 0.08em;
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 18px;
+    color: var(--fg-dim);
+    margin-bottom: 16px;
   }
   .hero {
-    margin: -8px -8px 24px;
-    border-radius: 16px;
-    overflow: hidden;
+    margin: 0 0 28px;
+  }
+  .hero img {
+    width: 100%;
+    height: auto;
+    display: block;
   }
   h1 {
-    font-size: 28px;
-    line-height: 1.3;
-    margin: 0 0 12px;
-    background: linear-gradient(135deg, #ffffff, var(--accent) 120%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0 0 10px;
+    color: var(--fg);
+    letter-spacing: -0.01em;
   }
   .lore {
     color: var(--fg-dim);
-    font-size: 15px;
-    margin: 0 0 32px;
-    font-style: italic;
+    font-size: 14px;
+    margin: 0 0 28px;
   }
   .card {
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
     margin-bottom: 24px;
   }
   .notice {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 18px;
-    border-radius: 10px;
+    padding: 12px 0;
     margin-bottom: 24px;
     font-size: 14px;
-    border: 1px solid var(--border);
-  }
-  .notice.expired {
-    border-color: var(--danger);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     color: var(--danger);
-    background: rgba(248, 113, 113, 0.08);
   }
-  ol { padding-left: 20px; margin: 0; }
-  li { margin-bottom: 22px; }
+  ol { padding-left: 18px; margin: 0; }
+  li { margin-bottom: 20px; }
   li:last-child { margin-bottom: 0; }
   code, pre {
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 13px;
+    font-size: 12.5px;
   }
   code.inline {
     background: var(--code-bg);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 1px 6px;
+    border-radius: 3px;
+    padding: 1px 5px;
   }
   pre {
     background: var(--code-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 14px;
+    border-radius: 4px;
+    padding: 10px 12px;
     overflow-x: auto;
     margin: 8px 0 0;
     white-space: pre-wrap;
     word-break: break-all;
   }
-  .note { font-size: 13.5px; color: var(--fg-dim); margin-top: 6px; }
-  .accent { color: var(--accent); }
+  .note { font-size: 13px; color: var(--fg-dim); margin-top: 6px; }
+  .accent { font-weight: 500; }
   footer {
-    margin-top: 40px;
-    font-size: 13px;
+    margin-top: 36px;
+    font-size: 12px;
     color: var(--fg-dim);
     text-align: center;
   }
-  footer a { color: var(--accent); text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
+  footer a { color: var(--fg-dim); text-decoration: none; }
+  footer a:hover { color: var(--fg); }
 `;
 
 function instructionsList({ urlPlaceholderId }) {
@@ -155,7 +135,9 @@ function page({ title, headerBadge, notice, script }) {
 </head>
 <body>
   <div class="container">
-    <div class="hero">${HERO_SVG}</div>
+    <div class="hero">
+      <img src="/assets/hero.png" alt="${HERO_ALT}" width="1254" height="1254">
+    </div>
     <div class="badge">${headerBadge}</div>
     <h1>Shintenshin &mdash; mind transfer awaits you</h1>
     <p class="lore">A forbidden jutsu, sealed in cipher, carries one mind's memory across the wire to another vessel.</p>
@@ -177,7 +159,7 @@ export function renderLanding({ mode }) {
   if (mode === 'transfer') {
     return page({
       title: 'Shintenshin — mind transfer awaits you',
-      headerBadge: '🥷 transfer ready',
+      headerBadge: 'transfer ready',
       notice: '',
       script: `<script>
         (function () {
@@ -193,16 +175,15 @@ export function renderLanding({ mode }) {
   if (mode === 'not-found') {
     return page({
       title: 'Shintenshin — transfer expired or not found',
-      headerBadge: '🥷 shintenshin',
-      notice: `<div class="notice expired">This transfer has expired or was never here. Links are only valid for 7 days after creation.</div>`,
+      headerBadge: 'shintenshin',
+      notice: `<div class="notice">This transfer has expired or was never here. Links are only valid for 7 days after creation.</div>`,
       script: '',
     });
   }
 
-  // generic
   return page({
     title: 'Shintenshin — mind transfer awaits you',
-    headerBadge: '🥷 shintenshin',
+    headerBadge: 'shintenshin',
     notice: '',
     script: '',
   });

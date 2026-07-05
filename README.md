@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/hero.svg" alt="Shintenshin mascot — a chibi shinobi casts the mind-transfer jutsu, sending a glowing heart-kanji orb to a waiting silhouette" width="460">
+<img src="docs/assets/hero.png" alt="Shintenshin no Jutsu — hands form a mind-transfer seal, ink-sketch style" width="460">
 
 # 心転身 Shintenshin
 
