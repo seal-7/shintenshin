@@ -100,7 +100,68 @@ const BASE_CSS = `
   }
   footer a { color: var(--fg-dim); text-decoration: none; }
   footer a:hover { color: var(--fg); }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 24px;
+    margin: 0 0 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-value {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--fg-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
 `;
+
+function formatBytes(n) {
+  const bytes = Number(n) || 0;
+  if (bytes < 1024) return `${bytes} B`;
+  const units = ['KB', 'MB', 'GB'];
+  let value = bytes / 1024;
+  let unit = 0;
+  while (value >= 1024 && unit < units.length - 1) {
+    value /= 1024;
+    unit += 1;
+  }
+  return `${value < 10 ? value.toFixed(1) : Math.round(value)} ${units[unit]}`;
+}
+
+function formatCount(n) {
+  return Number(n || 0).toLocaleString('en-US');
+}
+
+function statsSection(stats) {
+  return `
+    <div class="stats" aria-label="Service statistics">
+      <div class="stat">
+        <span class="stat-value">${formatCount(stats.uploads)}</span>
+        <span class="stat-label">Transfers sent</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">${formatCount(stats.downloads)}</span>
+        <span class="stat-label">Transfers received</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">${formatCount(stats.activeBlobs)}</span>
+        <span class="stat-label">Active now</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">${formatBytes(stats.diskBytes)}</span>
+        <span class="stat-label">Data stored</span>
+      </div>
+    </div>
+  `;
+}
 
 function instructionsList({ urlPlaceholderId }) {
   return `
@@ -124,7 +185,7 @@ claude plugin install shintenshin@shintenshin</pre>
   `;
 }
 
-function page({ title, headerBadge, notice, script }) {
+function page({ title, headerBadge, notice, statsSection: statsHtml, script }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -142,6 +203,7 @@ function page({ title, headerBadge, notice, script }) {
     <h1>Shintenshin &mdash; mind transfer awaits you</h1>
     <p class="lore">A forbidden jutsu, sealed in cipher, carries one mind's memory across the wire to another vessel.</p>
     ${notice || ''}
+    ${statsHtml || ''}
     <div class="card">
       ${instructionsList({ urlPlaceholderId: 'full-url' })}
     </div>
@@ -155,7 +217,7 @@ function page({ title, headerBadge, notice, script }) {
 `;
 }
 
-export function renderLanding({ mode }) {
+export function renderLanding({ mode, stats }) {
   if (mode === 'transfer') {
     return page({
       title: 'Shintenshin — mind transfer awaits you',
@@ -185,6 +247,7 @@ export function renderLanding({ mode }) {
     title: 'Shintenshin — mind transfer awaits you',
     headerBadge: 'shintenshin',
     notice: '',
+    statsSection: stats ? statsSection(stats) : '',
     script: '',
   });
 }

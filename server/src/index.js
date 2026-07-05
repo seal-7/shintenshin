@@ -120,15 +120,44 @@ function blobExists(id) {
   return fs.existsSync(idPath(id));
 }
 
+async function collectLiveStats() {
+  let activeBlobs = 0;
+  let diskBytes = 0;
+  try {
+    const files = await fsp.readdir(DATA_DIR);
+    for (const file of files) {
+      if (!file.endsWith('.bin')) continue;
+      try {
+        const stat = await fsp.stat(path.join(DATA_DIR, file));
+        activeBlobs += 1;
+        diskBytes += stat.size;
+      } catch {
+        // ignore races with concurrent deletes
+      }
+    }
+  } catch {
+    // DATA_DIR unreadable: report zeros rather than failing
+  }
+
+  return {
+    ...stats.snapshot(),
+    activeBlobs,
+    diskBytes,
+    uptimeSeconds: Math.floor(process.uptime()),
+    serverTime: new Date().toISOString(),
+  };
+}
+
 // --- routes ---
 
 app.get('/healthz', (req, res) => {
   res.json({ ok: true });
 });
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   stats.recordLandingView();
-  res.type('html').send(renderLanding({ mode: 'generic' }));
+  const liveStats = await collectLiveStats();
+  res.type('html').send(renderLanding({ mode: 'generic', stats: liveStats }));
 });
 
 app.get('/t/:id', (req, res) => {
@@ -216,31 +245,7 @@ app.get('/api/v1/stats', async (req, res) => {
     return;
   }
 
-  let activeBlobs = 0;
-  let diskBytes = 0;
-  try {
-    const files = await fsp.readdir(DATA_DIR);
-    for (const file of files) {
-      if (!file.endsWith('.bin')) continue;
-      try {
-        const stat = await fsp.stat(path.join(DATA_DIR, file));
-        activeBlobs += 1;
-        diskBytes += stat.size;
-      } catch {
-        // ignore races with concurrent deletes
-      }
-    }
-  } catch {
-    // DATA_DIR unreadable: report zeros rather than failing
-  }
-
-  res.json({
-    ...stats.snapshot(),
-    activeBlobs,
-    diskBytes,
-    uptimeSeconds: Math.floor(process.uptime()),
-    serverTime: new Date().toISOString(),
-  });
+  res.json(await collectLiveStats());
 });
 
 app.use((req, res) => {
