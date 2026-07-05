@@ -104,6 +104,8 @@ Claude prints for you to run.)
 The server (`server/`) is a small Node + Express app designed for [Railway](https://railway.app):
 
 1. Deploy `server/` as a Railway service (a `Dockerfile` is included: `node:22-alpine`).
+   Connect the GitHub repo with root directory `server/` and branch `main` for auto-deploy
+   on push (`server/railway.json` configures the Docker build).
 2. Attach a persistent volume and point `DATA_DIR` at it (default `./data` if unset).
 3. Set `PORT` if you need something other than Railway's default (falls back to `3000`
    locally).
