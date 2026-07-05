@@ -123,19 +123,6 @@ const BASE_CSS = `
   }
 `;
 
-function formatBytes(n) {
-  const bytes = Number(n) || 0;
-  if (bytes < 1024) return `${bytes} B`;
-  const units = ['KB', 'MB', 'GB'];
-  let value = bytes / 1024;
-  let unit = 0;
-  while (value >= 1024 && unit < units.length - 1) {
-    value /= 1024;
-    unit += 1;
-  }
-  return `${value < 10 ? value.toFixed(1) : Math.round(value)} ${units[unit]}`;
-}
-
 function formatCount(n) {
   return Number(n || 0).toLocaleString('en-US');
 }
@@ -150,14 +137,6 @@ function statsSection(stats) {
       <div class="stat">
         <span class="stat-value">${formatCount(stats.downloads)}</span>
         <span class="stat-label">Transfers received</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">${formatCount(stats.activeBlobs)}</span>
-        <span class="stat-label">Active now</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">${formatBytes(stats.diskBytes)}</span>
-        <span class="stat-label">Data stored</span>
       </div>
     </div>
   `;
