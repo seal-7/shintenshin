@@ -151,7 +151,7 @@ async function main() {
     message: {
       role: "user",
       content:
-        "<system-reminder>This conversation was transferred from another machine via Shintenshin. The filesystem, git state, and files referenced above may not exist or may differ here. Re-verify file state before editing anything. Greet the user, tell them the transfer succeeded, and summarize where things left off.</system-reminder>",
+        "Shintenshin transfer complete. This conversation was imported from another machine or session — the filesystem, git state, and any files referenced above may not exist or may differ here. Re-verify file state before editing anything, then greet me, confirm the transfer succeeded, and summarize where we left off.",
     },
     uuid: randomUUID(),
     timestamp: new Date().toISOString(),
@@ -183,7 +183,9 @@ async function main() {
   console.log("Transfer received successfully.");
   console.log(`New session id: ${newSessionId}`);
   console.log(`Written to: ${targetPath}`);
-  console.log(`Next step: run \`claude --resume ${newSessionId}\` from ${receiverCwd}`);
+  console.log("Next step: in this same terminal, run /resume and pick the session that");
+  console.log("just arrived (it will be the most recent one in the list).");
+  console.log(`(Alternatively, from a new terminal: \`claude --resume ${newSessionId}\` from ${receiverCwd})`);
 }
 
 main().catch((err) => {

@@ -1,6 +1,6 @@
 # 心転身 Shintenshin
 
-<p align="center"><img src="docs/assets/hero.svg" alt="Shintenshin — two silhouettes joined by a chakra transfer beam" width="100%"></p>
+<p align="center"><img src="docs/assets/hero.svg" alt="Shintenshin — a hand seal channels a conversation from one person to another" width="100%"></p>
 
 **Mind-Body Transfer Jutsu for Claude Code — hand your entire conversation to someone
 else with a single link.**

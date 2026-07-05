@@ -25,12 +25,12 @@ id. It never overwrites an existing transcript.
    than the current directory.
 2. Relay the script's output to the user close to verbatim: success
    message, the new session id, and the file path written.
-3. **Important**: tell the user to run the resume command *themselves*,
-   in a new terminal/session — a running session cannot resume into
-   itself:
-   ```
-   claude --resume <new-id>
-   ```
-   (run from the cwd shown in the output).
+3. **Important**: tell the user to switch to it *themselves* — a running
+   session cannot resume into itself:
+   - In **this same terminal**, run `/resume` and pick the session that
+     just arrived (it'll be the most recent one in the picker). This is
+     the recommended path — no need to leave the terminal.
+   - Or, from a new terminal: `claude --resume <new-id>` (run from the
+     cwd shown in the output).
 4. If the script exits non-zero (bad link, expired, wrong key, network
    error), show the user the exact error message it printed.

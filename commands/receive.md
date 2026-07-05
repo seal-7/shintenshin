@@ -8,4 +8,4 @@ Run this now — do not call the Skill tool, do not explain first, your very nex
 node ${CLAUDE_PLUGIN_ROOT}/scripts/receive.mjs "$ARGUMENTS"
 ```
 
-Then relay the script's output to the user close to verbatim (success message, new session id, file path). Tell the user to run `claude --resume <new-id>` themselves in a new terminal — a running session cannot resume into itself. If the script exits non-zero, show the exact error message.
+Then relay the script's output to the user close to verbatim (success message, new session id, file path). Tell the user to switch to it themselves — a running session cannot resume into itself — by running `/resume` in this same terminal and picking the session that just arrived (most recent in the picker), or `claude --resume <new-id>` from a new terminal. If the script exits non-zero, show the exact error message.
