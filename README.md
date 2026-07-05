@@ -1,9 +1,16 @@
+<div align="center">
+
+<img src="docs/assets/hero.svg" alt="Shintenshin mascot — a chibi shinobi casts the mind-transfer jutsu, sending a glowing heart-kanji orb to a waiting silhouette" width="460">
+
 # 心転身 Shintenshin
 
-<p align="center"><img src="docs/assets/hero.svg" alt="Shintenshin — a hand seal channels a conversation from one person to another" width="100%"></p>
+**Mind-Body Transfer Jutsu for Claude Code — hand your entire conversation to someone else with a single link.**
 
-**Mind-Body Transfer Jutsu for Claude Code — hand your entire conversation to someone
-else with a single link.**
+<img src="https://img.shields.io/badge/Claude_Code-plugin-8b5cf6?style=flat-square" alt="Claude Code plugin"> <img src="https://img.shields.io/badge/encryption-AES--256--GCM-22c55e?style=flat-square" alt="AES-256-GCM end-to-end encrypted"> <img src="https://img.shields.io/badge/license-MIT-555?style=flat-square" alt="MIT license">
+
+*He steps away mid-session. She opens one link. The jutsu is complete.*
+
+</div>
 
 Shintenshin (心転身, from the Yamanaka clan's *Shintenshin no Jutsu*) is a Claude Code
 plugin that exports your current conversation — full history, tool calls, and context —
