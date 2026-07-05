@@ -54,6 +54,11 @@ const BASE_CSS = `
   .lore {
     color: var(--fg-dim);
     font-size: 14px;
+    margin: 0 0 12px;
+  }
+  .tagline {
+    color: var(--fg);
+    font-size: 14px;
     margin: 0 0 28px;
   }
   .card {
@@ -142,6 +147,17 @@ function statsSection(stats) {
   `;
 }
 
+const TAGLINES = [
+  'Hand off your session to anyone, encrypted.',
+  'Let others resume right where you left off.',
+  'Resume your own session from any machine.',
+  "Fully encrypted — the server can't read it.",
+];
+
+function randomTagline() {
+  return TAGLINES[Math.floor(Math.random() * TAGLINES.length)];
+}
+
 function receiveInstructions({ urlPlaceholderId }) {
   return `
     <ol>
@@ -189,13 +205,17 @@ claude plugin install shintenshin@shintenshin</pre>
   `;
 }
 
-function page({ title, headerBadge, notice, statsSection: statsHtml, instructionsHtml, script }) {
+function page({ title, headerBadge, notice, taglineHtml, statsSection: statsHtml, instructionsHtml, script }) {
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${title}</title>
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/assets/favicon-16.png" type="image/png" sizes="16x16">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <style>${BASE_CSS}</style>
 </head>
 <body>
@@ -206,6 +226,7 @@ function page({ title, headerBadge, notice, statsSection: statsHtml, instruction
     <div class="badge">${headerBadge}</div>
     <h1>Shintenshin &mdash; mind transfer awaits you</h1>
     <p class="lore">A forbidden jutsu, sealed in cipher, carries one mind's memory across the wire to another vessel.</p>
+    ${taglineHtml || ''}
     ${notice || ''}
     ${statsHtml || ''}
     <div class="card">
@@ -253,6 +274,7 @@ export function renderLanding({ mode, stats }) {
     title: 'Shintenshin — mind transfer awaits you',
     headerBadge: 'shintenshin',
     notice: '',
+    taglineHtml: `<p class="tagline">${randomTagline()}</p>`,
     statsSection: stats ? statsSection(stats) : '',
     instructionsHtml: homeInstructions(),
     script: '',
